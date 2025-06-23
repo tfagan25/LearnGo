@@ -1,22 +1,23 @@
 package main
 
 import (
-	"time"
-	"sync"
+	"encoding/json"
+	"fmt"
+	"log"
 )
 
-func wait(wg *sync.WaitGroup) {
-	defer wg.Done()
-	time.Sleep(10 * time.Second)
+type Person struct {
+	Name       string	`json:"Name"`
+	Occupation string	`json:"Occupation"`
+	Age        int		`json:"Age"`
 }
 
-func main () {
-	var wg sync.WaitGroup
+func main() {
+	Trevor := Person{Name: "Trevor", Occupation: "SRE", Age: 23}
+	jsonTrevor, err := json.Marshal(Trevor)
+	if err != nil {
+		log.Fatal("no good json")
+	}
 
-	wg.Add(1)
-	go wait(&wg)
-	wg.Add(1)
-	go wait(&wg)
-
-	wg.Wait()
+	fmt.Printf("%s\n", jsonTrevor)
 }
